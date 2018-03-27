@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}详情{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/detail.css') }}">{% endblock %}
+{% block main %}
+    <h3 class="page_title">{{ question.title }}</h3>
+    <p class="question_info">
+        <span>作者：{{ question.author.username }}</span>
+        <span>时间：{{ question.create_time }}</span>
+    </p>
+    <hr>
+    <p>{{ question.content }}</p>
+    <hr>
+    <h5>评论({{ question.answers|length }})</h5>
+    <form action="{{ url_for('add_answer') }}" method="post">
+        <div class="form-group">
+            <input name="answer_content" type="text" class="form-control" placeholder="请填写评论">
+            <input hidden="hidden" name="question_id" value="{{ question.id }}">
+        </div>
+        <div class="form-group" style="text-align: right">
+            <button class="btn btn-primary">立即评论</button>
+        </div>
+    </form>
+
+    <ul class="answer_list">
+    {% for answer in question.answers %}
+        <li>
+            <div class="user_info">
+                <img src="{{ url_for('static',filename='images/zhiliao.png') }}" alt="" class="avatar">
+                <span class="username">{{ answer.author.username }}</span>
+                <span class="createtime">{{ answer.create_time }}</span>
+            </div>
+            <div class="answer_content">
+                {{ answer.content }}
+            </div>
+        </li>
+   {% endfor %}
+   </ul>
+{% endblock %}
